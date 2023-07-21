@@ -6,7 +6,7 @@ import StockContext from "../containers/StockContext";
 import { IStockDataInterface, IStockRecommendations } from "../types";
 
 function Search() {
-	const { setStockChartData } = useContext(StockContext);
+	const { setStockChartData, timeframe } = useContext(StockContext);
 
 	const [stock_name, setStockName] = useState<
 		string | String | null | undefined
@@ -16,20 +16,29 @@ function Search() {
 	);
 
 	const fetchChartData = async (name: string | String | null | undefined) => {
+		console.log(stock_tickers, name, "$$$$");
 		const stock_ticker = stock_tickers.filter(
-			(ticker) => stock_name === ticker.name
+			(ticker) => name === ticker.name
 		);
+		console.log(stock_ticker, ")))");
 		if (stock_ticker?.[0]) {
 			const response: AxiosResponse = await axios.post(
 				"http://localhost:3002/get-stock-data",
 				{
 					symbol: stock_ticker?.[0].ticker,
+					range: timeframe,
 				}
 			);
 
-			const data: IStockDataInterface[] = response.data;
+			const data = response.data;
 			console.log(data, "$$");
-			setStockChartData(data);
+			let ticker_data = data.map((prices: any) => {
+				return {
+					date: prices.date,
+					price: prices.close,
+				};
+			});
+			setStockChartData(ticker_data);
 		}
 	};
 
@@ -43,12 +52,10 @@ function Search() {
 			);
 
 			const data: IStockRecommendations[] = response.data;
-			console.log(data, "$$");
 			setStockTickers(data);
 		};
 		if (stock_name) fetchStockRecommendations(stock_name);
 	}, [stock_name]);
-	console.log(stock_tickers, "@@@@");
 	return (
 		<Container>
 			<Stack sx={{ marginTop: 10 }}>
@@ -58,12 +65,10 @@ function Search() {
 						event,
 						newInputValue: string | String | null | undefined
 					) => {
-						console.log(newInputValue, " @@4");
 						fetchChartData(newInputValue);
-						setStockTickers([]);
+						// setStockTickers([]);
 					}}
 					onInputChange={(event, newInputValue: string) => {
-						console.log(newInputValue, " @@2");
 						setStockName(newInputValue);
 					}}
 					id="stockName"

@@ -11,11 +11,14 @@ function Stock() {
 	const [stock_recommendations, setStockRecommendations] = useState<
 		IStockRecommendations[]
 	>([]);
+	const [timeframe, setTimeFrame] = useState("d");
 	const data = {
 		stock_chart_data,
 		setStockChartData,
 		stock_recommendations,
 		setStockRecommendations,
+		timeframe,
+		setTimeFrame,
 	};
 	return (
 		<StockContext.Provider value={data}>
