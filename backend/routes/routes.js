@@ -7,6 +7,7 @@ var yahoo = require("../service/stockprice.js");
 router.post("/get", function (req, res, next) {
 	const symbol = req.body.symbol;
 	const range = req.body.range;
+	console.log(symbol, range, " $$$");
 
 	yahoo.getOneStockBySymbol(symbol, range).then((data) => {
 		if (data) {
