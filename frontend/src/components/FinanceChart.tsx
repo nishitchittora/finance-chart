@@ -1,7 +1,6 @@
-import { Container, Link, Stack } from "@mui/material";
+import { Button, Container, Link, Stack } from "@mui/material";
 import {
 	CartesianGrid,
-	Legend,
 	Line,
 	LineChart,
 	ResponsiveContainer,
@@ -16,6 +15,7 @@ function FinanceChart() {
 	const { stock_chart_data, timeframe, setTimeFrame } =
 		useContext(StockContext);
 	console.log(stock_chart_data, "$$$$");
+
 	return (
 		<Container
 			sx={{
@@ -27,59 +27,57 @@ function FinanceChart() {
 		>
 			{stock_chart_data ? (
 				<Container>
-					<ResponsiveContainer width="100%" height="100%">
+					<ResponsiveContainer width="100%" height={400}>
 						<LineChart
-							width={500}
+							width={600}
 							height={300}
 							data={stock_chart_data}
-							margin={{
-								top: 5,
-								right: 30,
-								left: 20,
-								bottom: 5,
-							}}
+							margin={{ top: 5, right: 20, bottom: 5, left: 0 }}
 						>
-							<CartesianGrid strokeDasharray="3 3" />
-							<XAxis dataKey="date" />
-							<YAxis />
-							<Tooltip />
-							<Legend />
 							<Line
 								type="monotone"
 								dataKey="price"
-								stroke="#8884d8"
-								activeDot={{ r: 8 }}
+								stroke="#5A9D70"
 							/>
+							<CartesianGrid
+								stroke="#ccc"
+								strokeDasharray="5 5"
+							/>
+							<XAxis dataKey="date" />
+							<YAxis
+								domain={[
+									"dataMin+dataMin*0.1",
+									"dataMax+dataMax*0.1",
+								]}
+							/>
+							<Tooltip />
 						</LineChart>
 					</ResponsiveContainer>
 					<Stack direction="row" spacing={2}>
-						<Link
-							component="button"
-							variant="body2"
+						<Button
+							variant={timeframe === "d" ? "contained" : "text"}
 							onClick={() => {
-								console.info("I'm a button.");
+								timeframe !== "d" && setTimeFrame("d");
 							}}
 						>
 							Day
-						</Link>
-						<Link
-							component="button"
-							variant="body2"
+						</Button>
+						<Button
+							variant={timeframe === "w" ? "contained" : "text"}
 							onClick={() => {
-								console.info("I'm a button.");
+								timeframe !== "w" && setTimeFrame("w");
 							}}
 						>
 							Week
-						</Link>
-						<Link
-							component="button"
-							variant="body2"
+						</Button>
+						<Button
+							variant={timeframe === "m" ? "contained" : "text"}
 							onClick={() => {
-								console.info("I'm a button.");
+								timeframe !== "m" && setTimeFrame("m");
 							}}
 						>
 							Month
-						</Link>
+						</Button>
 					</Stack>
 				</Container>
 			) : (

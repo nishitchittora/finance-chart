@@ -11,22 +11,24 @@ function Search() {
 	const [stock_name, setStockName] = useState<
 		string | String | null | undefined
 	>("");
+	const [selected_stock_ticker, setSelectedStockTicker] = useState<
+		string | String | null | undefined
+	>("");
 	const [stock_tickers, setStockTickers] = useState<IStockRecommendations[]>(
 		[]
 	);
 
-	const fetchChartData = async (name: string | String | null | undefined) => {
-		console.log(stock_tickers, name, "$$$$");
-		const stock_ticker = stock_tickers.filter(
-			(ticker) => name === ticker.name
-		);
-		console.log(stock_ticker, ")))");
-		if (stock_ticker?.[0]) {
+	const fetchChartData = async (
+		ticker: string | String | null | undefined
+	) => {
+		console.log(stock_tickers, ticker, "$$$$");
+
+		if (ticker) {
 			const response: AxiosResponse = await axios.post(
 				"http://localhost:3002/get-stock-data",
 				{
-					symbol: stock_ticker?.[0].ticker,
-					range: timeframe,
+					symbol: ticker,
+					period: timeframe,
 				}
 			);
 
@@ -34,13 +36,18 @@ function Search() {
 			console.log(data, "$$");
 			let ticker_data = data.map((prices: any) => {
 				return {
-					date: prices.date,
-					price: prices.close,
+					date: prices.date.slice(0, 10),
+					price: prices.close.toFixed(2),
 				};
 			});
 			setStockChartData(ticker_data);
 		}
 	};
+
+	useEffect(() => {
+		console.log("innnn", timeframe);
+		fetchChartData(selected_stock_ticker);
+	}, [timeframe]);
 
 	useEffect(() => {
 		const fetchStockRecommendations = async (name: String) => {
@@ -65,8 +72,13 @@ function Search() {
 						event,
 						newInputValue: string | String | null | undefined
 					) => {
-						fetchChartData(newInputValue);
-						// setStockTickers([]);
+						const stock_ticker = stock_tickers.filter(
+							(ticker) => newInputValue === ticker.name
+						);
+						if (stock_ticker?.[0]) {
+							fetchChartData(newInputValue);
+							setSelectedStockTicker(stock_ticker?.[0].ticker);
+						}
 					}}
 					onInputChange={(event, newInputValue: string) => {
 						setStockName(newInputValue);

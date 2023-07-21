@@ -18,10 +18,10 @@ function getOneStockBySymbol(symbol, range, period) {
 		today.setMonth(today.getMonth() - range);
 	}
 
-	if (range == 60) period = "w";
+	// if (range == 60) period = "w";
 
 	const date_range = today.toISOString().substring(0, 10);
-
+	console.log(period, "$$$");
 	return yahooFinance
 		.historical({
 			symbol: symbol,

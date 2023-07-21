@@ -1,10 +1,8 @@
 import { SetStateAction, Dispatch } from "react";
 
 interface IStockDataInterface {
-	name: String;
-	uv: Number;
-	pv: Number;
-	amt: Number;
+	date: String;
+	price: Number;
 }
 
 interface IStockRecommendations {

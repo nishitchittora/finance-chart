@@ -7,9 +7,10 @@ var stockService = require("../service/stockprice.js");
 router.post("/get-stock-data", function (req, res, next) {
 	const symbol = req.body.symbol;
 	const range = req.body.range;
+	const period = req.body.period;
 	console.log(symbol, range, " $$$");
 
-	stockService.getOneStockBySymbol(symbol, range).then((data) => {
+	stockService.getOneStockBySymbol(symbol, range, period).then((data) => {
 		if (data) {
 			res.json(data);
 		} else {
