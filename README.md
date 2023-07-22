@@ -70,4 +70,4 @@ There are 2 main folders: Frontend and Backend.
    ![Weekly Chart Data](./screenshots/weekly_chart.png)
 
 7. Responsive Chart Data
-   ![Responsive](./screenshots/responsive.png)
+   ![Responsive](./screenshots/Responsive.png)
