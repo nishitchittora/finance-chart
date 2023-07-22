@@ -7,6 +7,10 @@ const StockContext = createContext<IStockContext>({
 	stock_recommendations: [],
 	timeframe: "",
 	setTimeFrame: () => {},
+	loadingChart: false,
+	loadingRecommendations: false,
+	setLoadingChart: () => {},
+	setLoadingRecommendations: () => {},
 });
 
 export default StockContext;

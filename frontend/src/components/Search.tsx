@@ -1,12 +1,19 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { Autocomplete, Container, Stack, TextField } from "@mui/material";
 import axios, { AxiosResponse } from "axios";
+import _debounce from "lodash.debounce";
 
 import StockContext from "../containers/StockContext";
 import { IStockDataInterface, IStockRecommendations } from "../types";
 
 function Search() {
-	const { setStockChartData, timeframe } = useContext(StockContext);
+	const {
+		setStockChartData,
+		timeframe,
+		setLoadingChart,
+		setLoadingRecommendations,
+		loadingRecommendations,
+	} = useContext(StockContext);
 
 	const [stock_name, setStockName] = useState<
 		string | String | null | undefined
@@ -24,6 +31,7 @@ function Search() {
 		console.log(stock_tickers, ticker, "$$$$");
 
 		if (ticker) {
+			setLoadingChart(true);
 			const response: AxiosResponse = await axios.post(
 				"http://localhost:3002/get-stock-data",
 				{
@@ -40,6 +48,7 @@ function Search() {
 					price: prices.close.toFixed(2),
 				};
 			});
+			setLoadingChart(false);
 			setStockChartData(ticker_data);
 		}
 	};
@@ -49,20 +58,29 @@ function Search() {
 		fetchChartData(selected_stock_ticker);
 	}, [timeframe]);
 
-	useEffect(() => {
-		const fetchStockRecommendations = async (name: String) => {
-			const response: AxiosResponse = await axios.post(
-				"http://localhost:3002/get-stock-tickers",
-				{
-					stock_name: stock_name,
-				}
-			);
+	const fetchStockRecommendations = async (name: String) => {
+		setLoadingRecommendations(true);
+		const response: AxiosResponse = await axios.post(
+			"http://localhost:3002/get-stock-tickers",
+			{
+				stock_name: name,
+			}
+		);
 
-			const data: IStockRecommendations[] = response.data;
-			setStockTickers(data);
-		};
-		if (stock_name) fetchStockRecommendations(stock_name);
-	}, [stock_name]);
+		const data: IStockRecommendations[] = response.data;
+		setStockTickers(data);
+		setLoadingRecommendations(false);
+	};
+	const debounceFetchRecommendations = useCallback(
+		_debounce(fetchStockRecommendations, 1000),
+		[]
+	);
+
+	const suggestRecommendations = (newValue: string) => {
+		setStockName(newValue);
+		debounceFetchRecommendations(newValue);
+	};
+
 	return (
 		<Container>
 			<Stack sx={{ marginTop: 10 }}>
@@ -76,18 +94,19 @@ function Search() {
 							(ticker) => newInputValue === ticker.name
 						);
 						if (stock_ticker?.[0]) {
-							fetchChartData(newInputValue);
+							fetchChartData(stock_ticker?.[0].ticker);
 							setSelectedStockTicker(stock_ticker?.[0].ticker);
 						}
 					}}
 					onInputChange={(event, newInputValue: string) => {
-						setStockName(newInputValue);
+						suggestRecommendations(newInputValue);
 					}}
 					id="stockName"
 					freeSolo
 					options={stock_tickers.map(
 						(option: IStockRecommendations | null) => option?.name
 					)}
+					loading={loadingRecommendations}
 					renderInput={(params) => (
 						<TextField {...params} label="Search Stock Name" />
 					)}

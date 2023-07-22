@@ -1,4 +1,11 @@
-import { Button, Container, Link, Stack } from "@mui/material";
+import {
+	Box,
+	Button,
+	CircularProgress,
+	Container,
+	Link,
+	Stack,
+} from "@mui/material";
 import {
 	CartesianGrid,
 	Line,
@@ -8,13 +15,29 @@ import {
 	XAxis,
 	YAxis,
 } from "recharts";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import StockContext from "../containers/StockContext";
 
 function FinanceChart() {
-	const { stock_chart_data, timeframe, setTimeFrame } =
+	const { stock_chart_data, timeframe, setTimeFrame, loadingChart } =
 		useContext(StockContext);
 	console.log(stock_chart_data, "$$$$");
+	if (loadingChart) {
+		return (
+			<Container
+				sx={{
+					marginTop: 20,
+					alignContent: "center",
+					display: "flex",
+					justifyContent: "center",
+				}}
+			>
+				<Box sx={{ display: "flex" }}>
+					<CircularProgress />
+				</Box>
+			</Container>
+		);
+	}
 
 	return (
 		<Container

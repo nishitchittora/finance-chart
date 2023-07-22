@@ -16,6 +16,10 @@ interface IStockContext {
 	stock_recommendations: IStockRecommendations[];
 	timeframe: string;
 	setTimeFrame: Dispatch<SetStateAction<string>>;
+	loadingChart: boolean;
+	setLoadingChart: Dispatch<SetStateAction<boolean>>;
+	loadingRecommendations: boolean;
+	setLoadingRecommendations: Dispatch<SetStateAction<boolean>>;
 }
 
 export {
