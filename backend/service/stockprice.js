@@ -21,7 +21,6 @@ function getOneStockBySymbol(symbol, range, period) {
 	// if (range == 60) period = "w";
 
 	const date_range = today.toISOString().substring(0, 10);
-	console.log(period, "$$$");
 	return yahooFinance
 		.historical({
 			symbol: symbol,
@@ -50,7 +49,6 @@ function searchStockTicker(stock_name) {
 function checkNullValues(data) {
 	if (Array.isArray(data)) {
 		for (let i = data.length - 1; i >= 0; i--) {
-			// console.log(data);
 			if (data[i].close === null) {
 				data.splice(i, 1);
 			} else if (data[i].date === null) {
@@ -59,23 +57,18 @@ function checkNullValues(data) {
 		}
 		return data;
 	} else {
-		// ==== IF GETTING MULTIPLE ====
-
 		for (let company in data) {
-			// console.log(data[company]);
 			if (data.hasOwnProperty(company)) {
 				for (let i = data[company].length - 1; i >= 0; i--) {
 					if (data[company][i].close === null) {
 						data[company].splice(i, 1);
 					} else if (data[company][i].date === null) {
-						// console.log(true);
 						data[company].splice(i, 1);
 					}
 				}
 			}
 		}
 
-		// checks for undefined values.
 		for (let company in data) {
 			if (data.hasOwnProperty(company)) {
 				if (typeof data[company][0] === "undefined") {

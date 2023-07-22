@@ -4,7 +4,7 @@ import axios, { AxiosResponse } from "axios";
 import _debounce from "lodash.debounce";
 
 import StockContext from "../containers/StockContext";
-import { IStockDataInterface, IStockRecommendations } from "../types";
+import { IStockRecommendations } from "../types";
 
 function Search() {
 	const {
@@ -28,8 +28,6 @@ function Search() {
 	const fetchChartData = async (
 		ticker: string | String | null | undefined
 	) => {
-		console.log(stock_tickers, ticker, "$$$$");
-
 		if (ticker) {
 			setLoadingChart(true);
 			const response: AxiosResponse = await axios.post(
@@ -41,7 +39,6 @@ function Search() {
 			);
 
 			const data = response.data;
-			console.log(data, "$$");
 			let ticker_data = data.map((prices: any) => {
 				return {
 					date: prices.date.slice(0, 10),
@@ -54,7 +51,6 @@ function Search() {
 	};
 
 	useEffect(() => {
-		console.log("innnn", timeframe);
 		fetchChartData(selected_stock_ticker);
 	}, [timeframe]);
 
@@ -78,9 +74,8 @@ function Search() {
 
 	const suggestRecommendations = (newValue: string) => {
 		setStockName(newValue);
-		debounceFetchRecommendations(newValue);
+		if (newValue) debounceFetchRecommendations(newValue);
 	};
-
 	return (
 		<Container>
 			<Stack sx={{ marginTop: 10 }}>

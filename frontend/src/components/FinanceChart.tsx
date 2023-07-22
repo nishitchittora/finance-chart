@@ -15,13 +15,12 @@ import {
 	XAxis,
 	YAxis,
 } from "recharts";
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import StockContext from "../containers/StockContext";
 
 function FinanceChart() {
 	const { stock_chart_data, timeframe, setTimeFrame, loadingChart } =
 		useContext(StockContext);
-	console.log(stock_chart_data, "$$$$");
 	if (loadingChart) {
 		return (
 			<Container
