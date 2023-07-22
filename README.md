@@ -48,7 +48,7 @@ npm install
 node app.js
 ```
 
-## Walkthrough
+## Screenshots
 
 1. First View with an empty state
    ![First View](./screenshots/initial.png)
