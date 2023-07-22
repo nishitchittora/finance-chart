@@ -2,13 +2,12 @@ var express = require("express");
 var router = express.Router();
 var fs = require("fs");
 
-var stockService = require("../service/stockprice.js");
+var stockService = require("../service/StockPrice.js");
 
 router.post("/get-stock-data", function (req, res, next) {
 	const symbol = req.body.symbol;
 	const range = req.body.range;
 	const period = req.body.period;
-	console.log(symbol, range, " $$$");
 
 	stockService.getOneStockBySymbol(symbol, range, period).then((data) => {
 		if (data) {
