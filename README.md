@@ -33,6 +33,22 @@ There are 2 main folders: Frontend and Backend.
 
 ## How to Run
 
+1. Frontend setup
+
+```bash
+  cd frontend
+  npm install
+  npm start
+```
+
+2. Backend setup
+
+```bash
+  cd backend
+  npm install
+  node app.js
+```
+
 ## Walkthrough
 
 1. First View with empty state
