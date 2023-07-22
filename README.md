@@ -4,8 +4,6 @@ React-based Application for tracking Stock Day, Weekly, and Monthly movement. Yo
 
 ## Tech Stack
 
-### Frontend
-
 -   Frontend: React, TypeScript, Material UI, ReCharts, Axios, and Lodash(Debouncer)
 -   Backend: ExpressJs, Cors, Yahoo-finance.
 
