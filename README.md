@@ -35,4 +35,23 @@ There are 2 main folders: Frontend and Backend.
 
 ## Walkthrough
 
-1. ![Initial Loading State](./screenshots/initial.png)
+1. First View with empty state
+   ![First View](./screenshots/initial.png)
+
+2. Recommendations when you start typing in input box
+   ![Recommendations](./screenshots/recommendations.png)
+
+3. Loading of Chart data after selection from recommendations
+   ![Loading](./screenshots/loading_state.png)
+
+4. Daily Chart Data
+   ![Daily Chart Data](./screenshots/daily_chart.png)
+
+5. Weekly Chart Data
+   ![Weekly Chart Data](./screenshots/weekly_chart.png)
+
+6. Monthly Chart Data
+   ![Weekly Chart Data](./screenshots/weekly_chart.png)
+
+7. Responsive Chart Data
+   ![Responsive](./screenshots/responsive.png)
