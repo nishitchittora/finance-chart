@@ -26,7 +26,7 @@ function getOneStockBySymbol(symbol, range, period) {
 			symbol: symbol,
 			from: date_range,
 			to: today_formatted,
-			period: period, // period: 'd'  // 'd' (daily), 'w' (weekly), 'm' (monthly), 'v' (dividends only)
+			period: period,
 		})
 		.then((data) => {
 			if (data.length) {
@@ -42,7 +42,7 @@ function searchStockTicker(stock_name) {
 	if (stock_ticker && stock_ticker.length) {
 		return stock_ticker;
 	} else {
-		return stocks.search("apple");
+		return stocks.search(stock_name);
 	}
 }
 

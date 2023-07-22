@@ -54,6 +54,8 @@ function Search() {
 		fetchChartData(selected_stock_ticker);
 	}, [timeframe]);
 
+	useEffect(() => {}, [stock_tickers]);
+
 	const fetchStockRecommendations = async (name: String) => {
 		setLoadingRecommendations(true);
 		const response: AxiosResponse = await axios.post(
@@ -72,9 +74,10 @@ function Search() {
 		[]
 	);
 
-	const suggestRecommendations = (newValue: string) => {
+	const suggestRecommendations = (newValue: String) => {
 		setStockName(newValue);
 		if (newValue) debounceFetchRecommendations(newValue);
+		else setStockTickers([]);
 	};
 	return (
 		<Container>
@@ -86,20 +89,36 @@ function Search() {
 						newInputValue: string | String | null | undefined
 					) => {
 						const stock_ticker = stock_tickers.filter(
-							(ticker) => newInputValue === ticker.name
+							(ticker) =>
+								newInputValue ===
+								`${ticker?.name} (${ticker?.ticker})`
 						);
 						if (stock_ticker?.[0]) {
 							fetchChartData(stock_ticker?.[0].ticker);
 							setSelectedStockTicker(stock_ticker?.[0].ticker);
 						}
 					}}
-					onInputChange={(event, newInputValue: string) => {
-						suggestRecommendations(newInputValue);
+					onInputChange={(event, newInputValue: String) => {
+						if (
+							newInputValue.includes("(") &&
+							newInputValue.includes(")")
+						) {
+							const stock_ticker = stock_tickers.filter(
+								(ticker) =>
+									newInputValue ===
+									`${ticker?.name} (${ticker?.ticker})`
+							);
+							if (stock_ticker?.[0])
+								suggestRecommendations(
+									stock_ticker?.[0].ticker
+								);
+						} else suggestRecommendations(newInputValue);
 					}}
 					id="stockName"
 					freeSolo
 					options={stock_tickers.map(
-						(option: IStockRecommendations | null) => option?.name
+						(option: IStockRecommendations | null) =>
+							`${option?.name} (${option?.ticker})`
 					)}
 					loading={loadingRecommendations}
 					renderInput={(params) => (
