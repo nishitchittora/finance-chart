@@ -15,10 +15,37 @@ import {
 	XAxis,
 	YAxis,
 } from "recharts";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import StockContext from "../containers/StockContext";
-
+import { db } from "../config/firebase";
+import {
+	getDoc,
+	getDocs,
+	collection,
+	addDoc,
+	deleteDoc,
+	updateDoc,
+	doc,
+} from "firebase/firestore";
 function FinanceChart() {
+	const userStocks = collection(db, "userStockPreference");
+	useEffect(() => {
+		const getUserStocks = async () => {
+			try {
+				const data = await getDocs(userStocks);
+				console.log(data);
+				const filterData = data.docs.map((doc) => ({
+					...doc.data(),
+					id: doc.id,
+				}));
+				console.log(filterData);
+			} catch (err) {
+				console.error(err);
+			}
+		};
+		getUserStocks();
+	}, []);
+
 	const { stock_chart_data, timeframe, setTimeFrame, loadingChart } =
 		useContext(StockContext);
 	if (loadingChart) {
@@ -37,7 +64,6 @@ function FinanceChart() {
 			</Container>
 		);
 	}
-
 	return (
 		<Container
 			sx={{

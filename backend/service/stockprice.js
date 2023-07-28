@@ -2,6 +2,7 @@
 
 const yahooFinance = require("yahoo-finance");
 const stocks = require("stock-ticker-symbol");
+
 function getOneStockBySymbol(symbol, range, period) {
 	const today = new Date();
 	const today_formatted = today.toISOString().substring(0, 10);
