@@ -3,7 +3,8 @@ import Search from "../components/Search";
 import StockContext from "./StockContext";
 import { IStockDataInterface, IStockRecommendations } from "../types";
 import FinanceChart from "../components/FinanceChart";
-import Auth from "../components/auth";
+import Login from "../components/Login";
+import Navbar from "./Navbar";
 
 function Stock() {
 	const [stock_chart_data, setStockChartData] = useState<
@@ -30,9 +31,13 @@ function Stock() {
 	};
 	return (
 		<StockContext.Provider value={data}>
-			<Auth />
-			<Search />
-			<FinanceChart />
+			<Login>
+				<>
+					<Navbar />
+					<Search />
+					<FinanceChart />
+				</>
+			</Login>
 		</StockContext.Provider>
 	);
 }

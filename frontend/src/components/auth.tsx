@@ -6,7 +6,11 @@ import {
 	signOut,
 } from "firebase/auth";
 
-const Auth = () => {
+interface IProps {
+	children: JSX.Element;
+}
+
+const Auth = ({ children }: IProps): JSX.Element => {
 	const [email, setEmail] = useState<string>("");
 	const [password, setPassword] = useState<string>("");
 	const signIn = async (e: SyntheticEvent<HTMLFormElement, SubmitEvent>) => {
@@ -32,6 +36,10 @@ const Auth = () => {
 			console.error(err);
 		}
 	};
+
+	if (auth?.currentUser?.email) {
+		return children;
+	}
 	return (
 		<div>
 			<form onSubmit={signIn}>
